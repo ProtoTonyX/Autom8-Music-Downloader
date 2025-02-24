@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+env/
+venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+.logs/
+
+# Test caches
+.pytest_cache/
+.mypy_cache/
+
+# Media files you want to ignore
+downloads/*.webm
+downloads/*.m4a
