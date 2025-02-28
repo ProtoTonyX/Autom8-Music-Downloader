@@ -22,6 +22,7 @@ Each function in this module may log errors related to file handling or subproce
 execution failures, providing feedback on any issues encountered.
 """
 
+import re
 import hashlib
 import subprocess
 from pathlib import Path
@@ -84,3 +85,30 @@ def embed_thumbnail(audio_file: Path, thumbnail_file: Path, output_file: Path) -
             f"❌ Thumbnail embed failed for {audio_file}\nError: {e.stderr}",
             level="ERROR",
         )
+
+
+def sanitize_filename(filename: str) -> str:
+    """
+    Cleans up filenames by removing unwanted characters and ensuring
+    a safe, consistent format.
+
+    - Removes surrounding quotes and escape characters.
+    - Replaces invalid characters with `_` (safe for most OS).
+    - Trims excessive spaces.
+
+    Args:
+        filename (str): The raw filename.
+
+    Returns:
+        str: A sanitized filename.
+    """
+    # Remove surrounding quotes if they exist
+    filename = filename.strip("\"'")
+
+    # Replace invalid characters with _
+    filename = re.sub(r'[<>:"/\\|?*\x00-\x1F]', "_", filename)
+
+    # Normalize spaces
+    filename = re.sub(r"\s+", " ", filename).strip()
+
+    return filename

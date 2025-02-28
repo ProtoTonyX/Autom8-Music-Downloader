@@ -5,6 +5,7 @@ Module for downloading audio or video files.
 This module provides functionality to download media files from the internet
 using specified URLs, handling multiple downloads concurrently when needed.
 """
+
 from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
@@ -15,6 +16,7 @@ from yt_dlp import YoutubeDL, DownloadError  # type: ignore[attr-defined]
 
 from core.log_manager import log_message
 from core.config import PLAYLIST_URLS, DOWNLOAD_DIR, ARCHIVE_FILE
+from core.utils import sanitize_filename
 
 # Define our own YDLOpts alias as a dictionary of options.
 YDLOpts = Dict[str, Any]
@@ -44,7 +46,8 @@ def download_single_playlist(playlist_url: str) -> None:
         "write_thumbnail": True,
         "embed_thumbnail": True,
         "embed_metadata": True,
-        "outtmpl": f"{DOWNLOAD_DIR}/%(playlist_index)s - %(title)s.%(ext)s",
+        "outtmpl": f"{DOWNLOAD_DIR}/"
+        + sanitize_filename("%(playlist_index)s - %(title)s.%(ext)s"),
         "download_archive": str(ARCHIVE_FILE),
         "quiet": False,
         "noplaylist": False,
